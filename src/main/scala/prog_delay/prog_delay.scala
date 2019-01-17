@@ -20,13 +20,14 @@ class prog_delay_io[ T <: Data]( proto: T, val maxdelay: Int=64) extends Bundle 
 //Class of programmable
 class prog_delay[ T <: Data ] (val proto: T, val maxdelay: Int=64)extends Module{
     val io=IO(
-        new prog_delay_io(proto,maxdelay)
+        new prog_delay_io(proto.cloneType,maxdelay)
        )
     // Both work, but asTypeOf should provide less "problems"
     //val zero=Ring[T].zero
     val zero=0.U.asTypeOf(proto.cloneType)
     val inreg=RegInit(zero)
     inreg:=io.iptr_A
+    
     val regarray=Reg(Vec(maxdelay,proto.cloneType))
     regarray.foldLeft(inreg) {(prev,next)=>next:=prev; next} //The last "next" is the return value that becomes the prev
 
