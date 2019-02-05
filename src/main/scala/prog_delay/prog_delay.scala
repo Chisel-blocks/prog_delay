@@ -42,13 +42,13 @@ class prog_delay[ T <: Data ] (val proto: T, val maxdelay: Int=64)extends Module
     }
 
     val oreg=RegInit(zero)
-    oreg:=stage(log2Floor(maxdelay))
+    oreg:=stage(log2Ceil(maxdelay))
     io.optr_Z:=oreg
 }
 
 
 object prog_delay extends App {
-  val n=15
+  val n=16
   val proto=DspComplex(SInt(n.W), SInt(n.W))
   chisel3.Driver.execute(args, () => new prog_delay( proto=proto.cloneType, maxdelay=63
   ))
