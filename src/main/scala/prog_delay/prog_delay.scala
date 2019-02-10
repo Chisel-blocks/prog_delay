@@ -34,7 +34,7 @@ class prog_delay[ T <: Data ] (val proto: T, val maxdelay: Int=64)extends Module
     val i=Seq.range(0,log2Ceil(maxdelay))
     val pipes=i.map(i=>Module(new Pipe(proto.cloneType,latency=scala.math.pow(2,i).toInt)).io)
 
-    for ( index <- 0 to log2Floor(maxdelay) ){
+    for ( index <- 0 to log2Ceil(maxdelay)-1 ){
         pipes(index).enq.valid:=true.B
         pipes(index).enq.bits:=stage(index)
         stageo(index):=pipes(index).deq.bits
