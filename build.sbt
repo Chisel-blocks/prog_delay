@@ -2,12 +2,11 @@ import scala.sys.process._
 // OBS: sbt._ has also process. Importing scala.sys.process 
 // and explicitly using it ensures the correct operation
 
-organization := "edu.berkeley.cs"
+organization := "Chisel-blocks"
 
 name := "prog_delay"
 
-version := scala.sys.process.Process("git rev-parse --short HEAD").!!.mkString.replaceAll("\\s", "")+"-SNAPSHOT"
-
+version := scala.sys.process.Process("git rev-parse --short HEAD").!!.mkString.replaceAll("\\s", "")
 scalaVersion := "2.12.3"
 
 // [TODO] what are these needed for? remove if obsolete
@@ -41,7 +40,7 @@ def javacOptionsVersion(scalaVersion: String): Seq[String] = {
 // for those modules not version controlled by Maven or equivalent
 def gitSubmoduleHashSnapshotVersion(submod: String): String = {
     val shellcommand =  "git submodule status | grep %s | awk '{print substr($1,0,7)}'".format(submod)
-    scala.sys.process.Process(Seq("/bin/sh", "-c", shellcommand )).!!.mkString.replaceAll("\\s", "")+"-SNAPSHOT"
+    scala.sys.process.Process(Seq("/bin/sh", "-c", shellcommand )).!!.mkString.replaceAll("\\s", "")
 }
 
 
@@ -61,9 +60,9 @@ resolvers += "Sonatype Releases" at "https://oss.sonatype.org/content/repositori
 // Provide a managed dependency on X if -DXVersion="" is supplied on the command line.
 // [TODO] is simpler clearer?
 val defaultVersions = Map(
-  "chisel3" -> "3.1.6",
+  "chisel3" -> "3.1.7",
   "chisel-iotesters" -> "1.2.5",
-  "dsptools" -> "1.1.4"
+  "dsptools" -> "1.1.8"
   )
 
 libraryDependencies ++= (Seq("chisel3","chisel-iotesters","dsptools").map {
@@ -83,10 +82,6 @@ libraryDependencies  ++= Seq(
   // It depends on LGPL code
   "org.scalanlp" %% "breeze-viz" % "0.13.2"
 )
-
-// Some common deps in BWRC projects, select if needed
-// TODO-how to figure out what version is the current and the best?
-libraryDependencies += "edu.berkeley.cs" %% "dsptools" % "1.1-SNAPSHOT"
 
 //libraryDependencies += "berkeley" %% "rocketchip" % "1.2"
 //libraryDependencies += "edu.berkeley.eecs" %% "ofdm" % "0.1"
